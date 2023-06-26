@@ -4,8 +4,10 @@ import java.io.*;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Logger;
 
 public class ServerHandlerClient extends Thread {
+    private static final Logger log = Logger.getLogger("History");
 
     private Socket socket;
     private BufferedReader in;
@@ -16,7 +18,9 @@ public class ServerHandlerClient extends Thread {
         this.socket = socket;
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        System.out.println(printDate() + " ** System ** New connection");
+        String msgInfo = " ** System ** New connection";
+        log.info(msgInfo);
+        System.out.println(printDate() + msgInfo);
         newConnection();
         start();
     }
@@ -40,10 +44,11 @@ public class ServerHandlerClient extends Thread {
                     }
                     break;
                 }
-                String history = "[ " + printDate() + "] " + name + ": " + msg;
-                System.out.println(history);
+                String history = name + ": " + msg;
+                log.info(history);
+                String historyMsg = "[ " + printDate() + "] " + name + ": " + msg;
                 for (ServerHandlerClient vr : Server.serverList) {
-                    vr.send(history);
+                    vr.send(historyMsg);
                 }
             }
         } catch (IOException e) {
@@ -52,6 +57,7 @@ public class ServerHandlerClient extends Thread {
 
     private void send(String msg) {
         try {
+            //log.info(msg);
             out.write(printDate() + msg + "\n");
             out.flush();
         } catch (IOException e) {
@@ -67,7 +73,7 @@ public class ServerHandlerClient extends Thread {
             out.write("Hello <<" + name + ">>\n");
             out.flush();
             msg = printDate() + " ** INFO ** The new user has connected => " + name;
-            System.out.println(msg);
+            log.info(msg);
             for (ServerHandlerClient vr : Server.serverList) {
                 vr.send(msg);
             }
