@@ -4,23 +4,25 @@ import java.io.*;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.logging.Logger;
 
 public class ServerHandlerClient extends Thread {
-    private static final Logger log = Logger.getLogger("History");
+    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(ServerHandlerClient.class);
 
     private Socket socket;
     private BufferedReader in;
     private BufferedWriter out;
     private String name;
+    private String logMsg;
 
     public ServerHandlerClient(Socket socket) throws IOException {
         this.socket = socket;
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        String msgInfo = " ** System ** New connection";
-        log.info(msgInfo);
-        System.out.println(printDate() + msgInfo);
+
+        logMsg = " ** System ** New connection";
+        log.info(logMsg);
+        System.out.println(printDate() + logMsg);
+
         newConnection();
         start();
     }
@@ -44,11 +46,12 @@ public class ServerHandlerClient extends Thread {
                     }
                     break;
                 }
-                String history = name + ": " + msg;
-                log.info(history);
-                String historyMsg = "[ " + printDate() + "] " + name + ": " + msg;
+                logMsg = "[ " + printDate() + "] " + name + ": " + msg;
+                System.out.println(logMsg);
+                log.info(logMsg);
+//                Server.history.add(history);
                 for (ServerHandlerClient vr : Server.serverList) {
-                    vr.send(historyMsg);
+                    vr.send(logMsg);
                 }
             }
         } catch (IOException e) {
@@ -57,7 +60,6 @@ public class ServerHandlerClient extends Thread {
 
     private void send(String msg) {
         try {
-            //log.info(msg);
             out.write(printDate() + msg + "\n");
             out.flush();
         } catch (IOException e) {
@@ -67,18 +69,27 @@ public class ServerHandlerClient extends Thread {
     private void newConnection() {
         String msg;
         try {
-            out.write("WELCOME to the Chat! Press your nick name:\n");
+            logMsg = "WELCOME to the Chat! Press your nick name:";
+            log.info(logMsg);
+            out.write(logMsg + "\n");
             out.flush();
+
             name = in.readLine();
-            out.write("Hello <<" + name + ">>\n");
+            logMsg = "Hello <<" + name + ">>";
+            log.info(logMsg);
+            out.write(logMsg + "\n");
             out.flush();
+
             msg = printDate() + " ** INFO ** The new user has connected => " + name;
+            System.out.println(msg);
             log.info(msg);
+            //Server.history.add(msg);
             for (ServerHandlerClient vr : Server.serverList) {
                 vr.send(msg);
             }
         } catch (IOException e) {
         }
+        //Server.history.printLast(out);
     }
 
     private String printDate() {
