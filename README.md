@@ -19,7 +19,7 @@
 ### Сервер используется для принятия подключений пользователей и получения от них сообщений
 - Устанавливаем поток для принятия новых пользователей в [ServerHandlerClient](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/serverpack/Server.java#L20), откуда происходит дальнейшее чтение сообщений каждого пользователя отдельно
 - ServerHandlerClient.java - класс для обработки [сообщений](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/serverpack/ServerHandlerClient.java)
-- Получение и отправка [сообщений](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/serverpack/ServerHandlerClient.java#L27-L59)
+- Получение и отправка [сообщений](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/serverpack/ServerHandlerClient.java#L36-L63)
 - Сообщения записываются в [file.log]()
 
 ## [Client.java](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/clientpack/ClientFirst.java)
