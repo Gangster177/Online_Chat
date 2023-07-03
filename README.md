@@ -24,6 +24,6 @@
 
 ## [Client.java](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/clientpack/ClientFirst.java)
 - Считываем [settings](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/clientpack/ClientFirst.java#L18-L21)
-- Выбор [имени для участия в чате](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/clientpack/ClientFirst.java#L39)
+- Выбор [имени для участия в чате](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/clientpack/ClientFirst.java#L36)
 - [Поток чтения сообщений](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/clientpack/ClientFirst.java#L87-L98) от сервера
 - [Поток отправки сообщений](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/clientpack/ClientFirst.java#L86-L125) на сервер
