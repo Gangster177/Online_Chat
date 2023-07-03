@@ -44,3 +44,22 @@
 8. Протестировать сервер при подключении нескольких клиентов;
 9. Написать README.md к проекту;
 10. Отправить на проверку.
+
+# Описание предоставленного решения к проекту
+
+### Состав проекта и необходимые настройки для запуска приложения и тестов
+Проект выполнен в виде многомодульного приложения Maven. Проект состоит из трех модулей:
+1. serverpack - содержит классы серверного приложения.
+2. сlientpack - содержит классы клиентского приложение.
+
+
+## [Сервер](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/serverpack/Server.java)
+### Сервер используется для принятия подключений пользователей и получения от них сообщений
+- Устанавливаем поток для принятия новых пользователей в [ServerHandlerClient](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/serverpack/Server.java#L18-L19), откуда происходит дальнейшее чтение сообщений каждого пользователя отдельно
+- ServerHandlerClient.java - поток для обработки [сообщений](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/serverpack/ServerHandlerClient.java)
+- Получение и отправка [сообщений](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/serverpack/ServerHandlerClient.java#L27-L59)
+- Сообщения записываются в [file.log]()
+
+## [Client.java](https://github.com/Gangster177/courseworkChat/blob/main/src/main/java/clientpack/ClientFirst.java)
+- Считываем [settings]()
+- 

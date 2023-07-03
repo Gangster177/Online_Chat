@@ -1,16 +1,24 @@
 package clientpack;
 
+import serverpack.Settings;
+
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientFirst {
-    private static String host = "localhost";
-    private static int port = 8800;
 
     private static Socket socket;
     private static BufferedReader in;
     private static BufferedWriter out;
     private static BufferedReader input;
+
+    private static List<String> listByNickname = new ArrayList<>();//Arrays.asList("Бараш", "Ежик", "Нюша", "Копатыч", "Крош", "Совунья");
+    private static Settings settings = new Settings();
+
+    private static String host = settings.getHost();
+    private static int port = settings.getPort();
 
     public static void main(String[] args) throws InterruptedException {
         System.out.println("** System ** connecting...");
@@ -24,11 +32,56 @@ public class ClientFirst {
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         } catch (IOException e) {
         }
+        setNickname();
+        choosingNickname();
+
         readMsg().start();
         writeMsg().start();
 
         readMsg().join();
         writeMsg().join();
+    }
+
+    private static void setNickname() {
+        String line;
+        System.out.print("Welcome to the chat. ");
+        try {
+            while (!(line = in.readLine()).equals("end")) {
+                listByNickname.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void choosingNickname() {
+        System.out.println("Please select a number by nickname from the list: ");
+        int nick;
+        for (int i = 0; i < listByNickname.size(); i++) {
+            System.out.printf("%d. %s \n", i + 1, listByNickname.get(i));
+        }
+        while (true) {
+            try {
+                System.out.print("Input number: ");
+                String inputNick = input.readLine();
+                nick = Integer.parseInt(inputNick);
+                nick--;
+                if (nick >= listByNickname.size() || nick < 0) {
+                    System.out.println("** ERROR ** the number is not recognized .Repeat the input: ");
+                    continue;
+                }
+                break;
+            } catch (IOException | NumberFormatException ex) {
+                System.out.println("** ERROR ** the number is not recognized .Repeat the input: ");
+            }
+        }
+        try {
+            System.out.print("Click 'ENTER' to send your nickname-> " + listByNickname.get(nick));
+            String msg = listByNickname.get(nick);
+            out.write(msg);
+            out.flush();
+        } catch (IOException e) {
+        }
     }
 
     private static Thread readMsg() {

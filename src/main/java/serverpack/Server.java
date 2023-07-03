@@ -8,9 +8,10 @@ import java.util.List;
 
 public class Server {
     public static List<ServerHandlerClient> serverList = new ArrayList<>();
-//    public static History history = new History();
+    public static Settings settings = new Settings();
+
     public static void main(String[] args) throws IOException {
-        ServerSocket server = new ServerSocket(8800);
+        ServerSocket server = new ServerSocket(settings.getPort());
         System.out.println("<<<>>> System: Server Started <<<>>>");
         try {
             while (true) {
